@@ -2,9 +2,13 @@ const express = require("express");
 const { fork } = require("child_process");
 const PORT = 5000;
 const app = express();
-const fileUpload = require("./multer");
+const multer = require("multer");
+const path = require("path");
 
-app.post("/compress-media", fileUpload.single('media'), (req, res) => {
+var fileUpload = multer();
+
+app.post("/compress-media", fileUpload.single('media'), (req, res, next) => {
+  console.log(req.file)
   const filename = req.file.filename;
   const originalName = req.file.originalname;
   const tempFilePath = `${req.file.destination}/${filename}`;
